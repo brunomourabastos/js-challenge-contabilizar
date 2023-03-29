@@ -40,8 +40,30 @@ const recuperarSaldosPorConta = (lancamentos) => {
 }
 
 const recuperarMaiorMenorLancamentos = (cpf, lancamentos) => {
-   return []
+   const lancamentosFiltrados = lancamentos.filter(lancamento => lancamento.cpf === cpf)
+   if (lancamentosFiltrados.length === 0) {
+      return []
+   }
+
+   const maiorLancamento = lancamentosFiltrados.reduce((maior, lancamento) => {
+      if (lancamento.valor > maior.valor) {
+         return lancamento
+      }
+      return maior
+   })
+
+   const menorLancamento = lancamentosFiltrados.reduce((menor, lancamento) => {
+      if (lancamento.valor < menor.valor) {
+         return lancamento
+      }
+      return menor
+   })
+
+
+   return [maiorLancamento, menorLancamento]
+
 }
+
 
 const recuperarMaioresSaldos = (lancamentos) => {
    return []
