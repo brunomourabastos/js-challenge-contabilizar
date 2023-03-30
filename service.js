@@ -51,23 +51,43 @@ const recuperarMaiorMenorLancamentos = (cpf, lancamentos) => {
       }
       return maior
    })
-
    const menorLancamento = lancamentosFiltrados.reduce((menor, lancamento) => {
       if (lancamento.valor < menor.valor) {
          return lancamento
       }
       return menor
    })
-
-
+   if (maiorLancamento === menorLancamento) {
+      return [maiorLancamento]
+   }
    return [maiorLancamento, menorLancamento]
-
 }
 
 
 const recuperarMaioresSaldos = (lancamentos) => {
-   return []
+   if (lancamentos.length === 0) {
+      return []
+   }
+
+   const saldosPorCpf = lancamentos.reduce((saldos, lancamento) => {
+      const { cpf, valor } = lancamento
+      if (saldos[cpf]) {
+         saldos[cpf] += valor
+      } else {
+         saldos[cpf] = valor
+      }
+      return saldos
+   }, {})
+   const saldosOrdenados = Object.entries(saldosPorCpf).sort((a, b) => b[1] - a[1])
+   const maioresSaldos = saldosOrdenados.slice(0, 3).map(saldo => {
+      return {
+         cpf: saldo[0],
+         valor: saldo[1]
+      }
+   })
+   return maioresSaldos
 }
+
 
 const recuperarMaioresMedias = (lancamentos) => {
     return []
