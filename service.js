@@ -90,5 +90,36 @@ const recuperarMaioresSaldos = (lancamentos) => {
 
 
 const recuperarMaioresMedias = (lancamentos) => {
-    return []
+   if (lancamentos.length === 0) {
+      return []
+   }
+
+   const mediasPorCpf = lancamentos.reduce((medias, lancamento) => {
+      const { cpf, valor } = lancamento
+      if (medias[cpf]) {
+         medias[cpf].soma += valor
+         medias[cpf].quantidade++
+      } else {
+         medias[cpf] = {
+            soma: valor,
+            quantidade: 1
+         }
+      }
+      return medias
+   }
+      , {})
+
+   const mediasOrdenadas = Object.entries(mediasPorCpf).sort((a, b) => {
+      const mediaA = a[1].soma / a[1].quantidade
+      const mediaB = b[1].soma / b[1].quantidade
+      return mediaB - mediaA
+   })
+   const maioresMedias = mediasOrdenadas.slice(0, 3).map(media => {
+      return {
+         cpf: media[0],
+         valor: media[1].soma / media[1].quantidade
+      }
+   }
+   )
+   return maioresMedias
 }
