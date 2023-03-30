@@ -1,5 +1,4 @@
 
-
 const validarEntradaDeDados = (lancamento) => {
    const { cpf, valor } = lancamento;
    if (typeof cpf !== 'string' && cpf.length !== 11 && isNaN(cpf)) {
@@ -22,7 +21,6 @@ const validarEntradaDeDados = (lancamento) => {
 
    return null;
 }
-
 
 const recuperarSaldosPorConta = (lancamentos) => {
    if (lancamentos.length === 0) {
@@ -51,15 +49,18 @@ const recuperarMaiorMenorLancamentos = (cpf, lancamentos) => {
       }
       return maior
    })
+
    const menorLancamento = lancamentosFiltrados.reduce((menor, lancamento) => {
       if (lancamento.valor < menor.valor) {
          return lancamento
       }
       return menor
    })
+
    if (maiorLancamento === menorLancamento) {
       return [maiorLancamento]
    }
+
    return [maiorLancamento, menorLancamento]
 }
 
@@ -79,7 +80,7 @@ const recuperarMaioresSaldos = (lancamentos) => {
       return saldos
    }, {})
    const saldosOrdenados = Object.entries(saldosPorCpf).sort((a, b) => b[1] - a[1])
-   const maioresSaldos = saldosOrdenados.slice(0, 3).map(saldo => {
+   const maioresSaldos = saldosOrdenados.slice(0, 2).map(saldo => {
       return {
          cpf: saldo[0],
          valor: saldo[1]
@@ -87,7 +88,6 @@ const recuperarMaioresSaldos = (lancamentos) => {
    })
    return maioresSaldos
 }
-
 
 const recuperarMaioresMedias = (lancamentos) => {
    if (lancamentos.length === 0) {
@@ -106,20 +106,19 @@ const recuperarMaioresMedias = (lancamentos) => {
          }
       }
       return medias
-   }
-      , {})
+   }, {})
 
    const mediasOrdenadas = Object.entries(mediasPorCpf).sort((a, b) => {
       const mediaA = a[1].soma / a[1].quantidade
       const mediaB = b[1].soma / b[1].quantidade
       return mediaB - mediaA
    })
-   const maioresMedias = mediasOrdenadas.slice(0, 3).map(media => {
+   const maioresMedias = mediasOrdenadas.slice(0, 2).map(media => {
       return {
          cpf: media[0],
          valor: media[1].soma / media[1].quantidade
       }
-   }
-   )
+   })
+   
    return maioresMedias
 }
